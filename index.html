@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nutropika — Reuniones calificadas para startups de AI que venden al e-commerce en LATAM</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-card-hover: #1a1a28;
+      --border: #1e1e30;
+      --text: #e8e8f0;
+      --text-muted: #8888a0;
+      --accent: #6c5ce7;
+      --accent-light: #8b7cf7;
+      --accent-glow: rgba(108, 92, 231, 0.3);
+      --green: #00d68f;
+      --green-glow: rgba(0, 214, 143, 0.2);
+      --cyan: #00d4ff;
+      --orange: #ff6b35;
+      --gradient: linear-gradient(135deg, #6c5ce7 0%, #00d4ff 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background-image:
+        linear-gradient(rgba(108, 92, 231, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108, 92, 231, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; z-index: 0;
+    }
+    .orb-1 { width: 600px; height: 600px; background: var(--accent-glow); top: -200px; right: -200px; animation: float 20s ease-in-out infinite; }
+    .orb-2 { width: 400px; height: 400px; background: var(--green-glow); bottom: -100px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-bottom: 1px solid var(--border); }
+    .logo { font-size: 1.5rem; font-weight: 700; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .logo span { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; background: none; -webkit-text-fill-color: var(--text-muted); margin-left: 8px; }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 12px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; text-decoration: none; border: none; }
+    .btn-primary { background: var(--gradient); color: #fff; box-shadow: 0 0 20px var(--accent-glow); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px var(--accent-glow); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); background: var(--bg-card); }
+
+    .hero { padding: 100px 0 80px; text-align: center; position: relative; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 100px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 32px; }
+    .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green-glow); animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .hero h1 { font-size: 3.5rem; font-weight: 700; line-height: 1.15; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
+    .hero h1 .highlight { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    .results-section { padding: 60px 0; }
+    .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .result-stat { text-align: center; padding: 32px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; }
+    .result-stat .number { font-size: 2.5rem; font-weight: 700; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
+    .result-stat .label { color: var(--text-muted); font-size: 0.95rem; }
+
+    .pain-section { padding: 80px 0; }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .section-title { font-size: 2.2rem; font-weight: 600; margin-bottom: 16px; }
+    .section-subtitle { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin-bottom: 48px; }
+    .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .pain-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; transition: all 0.3s; }
+    .pain-card:hover { background: var(--bg-card-hover); border-color: var(--accent); transform: translateY(-4px); }
+    .pain-icon { font-size: 2rem; margin-bottom: 16px; }
+    .pain-card h3 { font-size: 1.1rem; margin-bottom: 12px; }
+    .pain-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+
+    .how-section { padding: 80px 0; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+    .step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 36px 28px; text-align: center; transition: all 0.3s; }
+    .step:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .step-number { width: 48px; height: 48px; border-radius: 12px; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 20px; }
+    .step h3 { margin-bottom: 12px; }
+    .step p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+
+    .offer-section { padding: 60px 0; }
+    .offer-box { background: linear-gradient(135deg, rgba(108, 92, 231, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%); border: 1px solid rgba(108, 92, 231, 0.3); border-radius: 16px; padding: 40px; text-align: center; max-width: 700px; margin: 0 auto; }
+    .offer-box h3 { font-size: 1.5rem; margin-bottom: 12px; }
+    .offer-box p { color: var(--text-muted); max-width: 500px; margin: 0 auto; }
+
+    .pricing-section { padding: 80px 0; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; max-width: 800px; margin: 0 auto; }
+    .pricing-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 40px 32px; text-align: center; position: relative; overflow: hidden; }
+    .pricing-card.featured { border-color: var(--accent); }
+    .pricing-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient); }
+    .pricing-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .pricing-amount { font-size: 3rem; font-weight: 700; margin-bottom: 8px; }
+    .pricing-amount span { font-size: 1.2rem; color: var(--text-muted); }
+    .pricing-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .pricing-features { list-style: none; text-align: left; margin-bottom: 24px; }
+    .pricing-features li { padding: 8px 0; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .pricing-features li:last-child { border-bottom: none; }
+    .pricing-features .check { color: var(--green); font-weight: 700; }
+    .pricing-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
+
+    .cta-section { padding: 100px 0; text-align: center; }
+    .cta-section h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 16px; }
+    .cta-section p { color: var(--text-muted); font-size: 1.1rem; max-width: 500px; margin: 0 auto 32px; }
+
+    .faq-section { padding: 80px 0; }
+    .faq-list { max-width: 700px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .faq-question { display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 500; font-size: 1.05rem; user-select: none; }
+    .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--text-muted); transition: transform 0.3s; }
+    .faq-item.active .faq-question::after { content: '−'; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+    .faq-item.active .faq-answer { max-height: 300px; padding-top: 16px; }
+
+    footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; }
+    footer p { color: var(--text-muted); font-size: 0.85rem; }
+    footer .logo { margin-bottom: 12px; display: inline-block; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 16px; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+    .footer-links a:hover { color: var(--text); }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 1rem; }
+      .nav-links { display: none; }
+      .section-title { font-size: 1.7rem; }
+      .results-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <nav>
+    <div class="logo">nutropika<span>// reuniones calificadas</span></div>
+    <div class="nav-links">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#precios">Precios</a>
+      <a href="#faq">FAQ</a>
+      <a href="#cta" class="btn btn-primary">Agenda una llamada</a>
+    </div>
+  </nav>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Aceptando nuestros primeros 3 clientes
+    </div>
+    <h1>
+      Tu startup de AI necesita<br>
+      <span class="highlight">más leads calificados</span>
+    </h1>
+    <p>
+      Te agendamos reuniones calificadas con tomadores de decisiones de empresas 
+      de e-commerce en Latinoamérica. Sin riesgo: <strong>solo pagas por las reuniones 
+      que realmente ocurren.</strong>
+    </p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn btn-primary">Agenda una llamada gratuita →</a>
+      <a href="#como-funciona" class="btn btn-outline">Cómo funciona</a>
+    </div>
+  </div>
+</section>
+
+<section class="results-section">
+  <div class="container">
+    <div class="results-grid">
+      <div class="result-stat">
+        <div class="number">10-15</div>
+        <div class="label">reuniones calificadas por mes</div>
+      </div>
+      <div class="result-stat">
+        <div class="number">0</div>
+        <div class="label">riesgo — pagas solo por resultados</div>
+      </div>
+      <div class="result-stat">
+        <div class="number">33</div>
+        <div class="label">países en LATAM</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== OFFER BOX (before problem section) ===== -->
+<section class="offer-section" id="para-quien">
+  <div class="container">
+    <div class="offer-box">
+      <h3>🎯 Esto es para startups de AI que ayudan a empresas de e-commerce en Latinoamérica</h3>
+      <p>
+        Si tu producto ayuda a negocios de e-commerce a vender más, operar mejor o 
+        atender a sus clientes — y necesitas llegar a los dueños, CTOs y gerentes de 
+        estas empresas — entonces somos para ti.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAIN SECTION ===== -->
+<section class="pain-section" id="problema">
+  <div class="container">
+    <div class="section-label">El problema</div>
+    <h2 class="section-title">Eres founder de una startup de AI. Tu producto innova.<br>Tus clientes lo aman. Pero la distribución se vuelve más difícil cada día.</h2>
+    <p class="section-subtitle">
+      Hoy cualquier startup de AI puede construir un producto sólido. La verdadera 
+      ventaja competitiva no está en el código — está en la distribución.
+    </p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">🥀</div>
+        <h3>Tu pipeline de ventas se seca</h3>
+        <p>
+          Sin nuevas conversaciones, no hay nuevos clientes. Pasas semanas prospectando, 
+          consigues un puñado de leads tibios, y se evaporan. Tu equipo de ventas 
+          necesita un flujo constante de reuniones para cerrar tratos.
+        </p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🎯</div>
+        <h3>Llegar a los tomadores de decisiones es cada vez más difícil</h3>
+        <p>
+          Los dueños de e-commerce están bombardeados de mensajes genéricos. Necesitas 
+          un approach personalizado, en su idioma, que demuestre que entiendes su negocio 
+          antes de siquiera pedirles su tiempo.
+        </p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">💰</div>
+        <h3>Tus SDRs internos te cuestan más de lo que generan</h3>
+        <p>
+          Entre salario, herramientas y capacitación, un SDR interno cuesta $2,000-$4,000/mo 
+          más comisiones. Y si no están obteniendo los resultados que esperas, 
+          estás quemando presupuesto sin pipeline que mostrar.
+        </p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🧠</div>
+        <h3>Estás perdiendo tiempo en lo que no importa</h3>
+        <p>
+          Tu superpoder es construir producto y entender a tus clientes. No gestionar 
+          campañas de outreach, investigar prospectos, o dar seguimiento a cientos de leads. 
+          Esa energía debería ir a cerrar ventas y hacer crecer tu negocio.
+        </p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📊</div>
+        <h3>Las agencias te prometen leads y te entregan datos fríos</h3>
+        <p>
+          Has pagado por "generación de leads" y recibiste una hoja de cálculo con 
+          contactos sin calificar. Sin personalización. Sin seguimiento. Sin resultados. 
+          Y el problema sigue siendo el mismo.
+        </p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔥</div>
+        <h3>Mientras tanto, tu competencia está cerrando esos contratos</h3>
+        <p>
+          El e-commerce en LATAM crece al 25% anual. Las startups de AI que están 
+          invirtiendo en distribución hoy son las que van a dominar el mercado mañana. 
+          La ventana no está abierta para siempre.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how-section" id="como-funciona">
+  <div class="container">
+    <div class="section-label">Cómo funciona</div>
+    <h2 class="section-title">Resultados, no promesas.</h2>
+    <p class="section-subtitle">
+      Sin configuraciones complicadas. Sin contratos largos. Solo un flujo constante de 
+      tomadores de decisiones listos para hablar contigo.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Definimos tu perfil ideal</h3>
+        <p>
+          Una llamada de 30 minutos para entender tu producto, tu mercado objetivo y 
+          el tipo de cliente que más te conviene. Construimos tu ICP.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Investigamos y contactamos</h3>
+        <p>
+          Encontramos a los tomadores de decisiones en e-commerce que encajan con tu perfil. 
+          Investigamos su contexto. Personalizamos cada mensaje. Gestionamos seguimientos 
+          y respuestas.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Las reuniones llegan a tu calendario</h3>
+        <p>
+          Calificadas. Confirmadas. Asistidas. Tú llegas, cierras el trato, 
+          y nosotros seguimos alimentando el pipeline. Mes tras mes.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== PRICING ===== -->
+<section class="pricing-section" id="precios">
+  <div class="container">
+    <div class="section-label" style="text-align:center;">Precios</div>
+    <h2 class="section-title" style="text-align:center;">Sin riesgo. Resultados medibles.</h2>
+    <p class="section-subtitle" style="text-align:center; margin-left:auto; margin-right:auto;">
+      Pagas solo por lo que funciona. Sin retenedores. Sin costos hundidos.
+    </p>
+    <div class="pricing-card">
+      <div class="pricing-amount">$100 <span>/reunión</span></div>
+      <p class="pricing-desc">
+        Por cada reunión calificada. El prospecto confirma, asiste y cumple con tu perfil 
+        de cliente ideal. Si no asiste, no cuenta. Sin contratos. Cancela cuando quieras.
+      </p>
+      <ul class="pricing-features">
+        <li><span class="check">✓</span> Tomadores de decisiones en e-commerce LATAM</li>
+        <li><span class="check">✓</span> Paga solo por leads calificados</li>
+        <li><span class="check">✓</span> Sin contrato. Cancela cuando quieras.</li>
+        <li><span class="check">✓</span> Reporte mensual de resultados</li>
+        <li><span class="check">✓</span> Prospección en español</li>
+      </ul>
+      <a href="#cta" class="btn btn-primary" style="width:100%;justify-content:center;">Agenda una llamada gratuita</a>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:16px;">
+        Primeros 3 clientes reciben atención fundacional. Invertimos 2 horas en entender 
+        tu negocio antes de enviar un solo mensaje.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="offer-section">
+  <div class="container">
+    <div class="offer-box" style="border-color: rgba(0, 214, 143, 0.3);">
+      <h3>🔒 Sin reuniones. Sin pago.</h3>
+      <p>
+        Si no te agendamos ninguna reunión calificada en un mes, no nos debes nada. 
+        Cero. Solo ganamos cuando tú ganas.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-label" style="text-align:center;">FAQ</div>
+    <h2 class="section-title" style="text-align:center;">¿Preguntas? Aquí están las respuestas.</h2>
+    <div class="faq-list">
+      <div class="faq-item active">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿Qué cuenta como una reunión "calificada"?
+        </div>
+        <div class="faq-answer">
+          Una reunión donde el prospecto coincide con tu perfil de cliente ideal (industria, tamaño, cargo), confirma asistencia y se presenta. Rastreamos todo. Si no se presenta, no cuenta.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿Para quién es este servicio?
+        </div>
+        <div class="faq-answer">
+          Para startups de AI con sede en Latinoamérica que venden soluciones al e-commerce. Si tu producto ayuda a tiendas online, marketplaces o marcas DTC a crecer, y necesitas llegar a tomadores de decisiones en la región — esto es para ti.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿En qué países trabajan?
+        </div>
+        <div class="faq-answer">
+          Cubrimos los 33 países de Latinoamérica. Empezamos con enfoque en México, Colombia y Chile — los mercados de e-commerce de más rápido crecimiento — y expandimos según tu necesidad. Nuestro sistema de prospección está configurado para operar en toda la región.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿Cuántas reuniones pueden agendar por mes?
+        </div>
+        <div class="faq-answer">
+          Apuntamos a 10-15 reuniones calificadas por mes por cliente. La calidad importa más que la cantidad. Preferimos agendarte 10 reuniones con prospectos que realmente encajan, que 30 reuniones con contactos fríos que no llevan a nada.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿Necesito darles acceso a mis datos o CRM?
+        </div>
+        <div class="faq-answer">
+          No. Solo necesitamos tu perfil de cliente ideal y un enlace de Calendly. Sin acceso a tu CRM, LinkedIn, ni cuentas internas. Nosotros investigamos, contactamos y gestionamos todo desde nuestra infraestructura.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿Cómo personalizan los mensajes para cada prospecto?
+        </div>
+        <div class="faq-answer">
+          Investigamos a cada prospecto individualmente: su empresa, su rol, los desafíos que enfrenta. Cada mensaje se escribe desde cero basado en esa investigación. No usamos plantillas genéricas. El objetivo es que cuando el prospecto reciba nuestro mensaje, sienta que entiendes su negocio.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿Cómo se compara con contratar un SDR interno?
+        </div>
+        <div class="faq-answer">
+          Un SDR interno cuesta $2,000-$4,000/mo entre salario y herramientas, más comisiones, sin garantía de resultados. Con nosotros pagas $100 por reunión calificada. Si una semana no hay reuniones, no pagas. Es más flexible, más barato y con menos riesgo. Además, nosotros ya tenemos la infraestructura y el conocimiento del mercado LATAM.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿Qué resultados puedo esperar en los primeros 30 días?
+        </div>
+        <div class="faq-answer">
+          Invertimos la primera semana en entender a fondo tu producto y tu ICP. La segunda semana comenzamos la prospección y outreach. Para la tercera y cuarta semana, las primeras reuniones empiezan a llegar a tu calendario. En 30 días deberías tener entre 5 y 10 reuniones calificadas.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          ¿Y si quiero cancelar?
+        </div>
+        <div class="faq-answer">
+          Sin contratos. Cancela cuando quieras. Pagas solo las reuniones ya agendadas. Sin penalización. Sin fricción. Si los resultados no te gustan, te vas sin compromiso.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="container">
+    <h2>¿Listo para llenar tu pipeline?</h2>
+    <p>
+      30 minutos, sin presión. Mapearemos a tu prospecto ideal y te mostraremos 
+      cuántas reuniones podemos agendarte este mes.
+    </p>
+    <a href="mailto:hello@nutropika.com" class="btn btn-primary" style="font-size:1.1rem;padding:16px 36px;">
+      Agenda tu llamada gratuita →
+    </a>
+    <p style="margin-top:16px;font-size:0.85rem;color:var(--text-muted);">
+      O escríbenos: <a href="mailto:hello@nutropika.com" style="color:var(--accent-light);">hello@nutropika.com</a>
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="logo">nutropika<span>// reuniones calificadas</span></div>
+    <p>Para startups de AI que venden al e-commerce en Latinoamérica</p>
+    <div class="footer-links">
+      <a href="mailto:hello@nutropika.com">Contacto</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('active'); });
+      item.classList.toggle('active');
+    });
+  });
+</script>
+
+</body>
+</html>
